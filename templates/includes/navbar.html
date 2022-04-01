@@ -1,0 +1,24 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="border-radius: 10px;">
+    <div class="container-fluid"> 
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav mr-auto">
+            <img src="{% static 'img/eczane.png' %}" width="38" height="38" title="akıllıeczane"/>  
+                <a href="/" class="nav-item nav-link active"><b>AKILLI ECZANE SİSTEMİ</b></a>              
+            </div>
+            <ul class="navbar-nav ml-auto">
+                {% if request.user.is_authenticated %}
+                <li class="nav-item nav-link active">Hoşgeldiniz, <b>{{request.user.username}}</b></li>
+                <li class="nav-item active"><a href="/medicines/dashboard"><button class="button button4"><b>Kontrol Paneli</b></button></a></li>
+                <li class="nav-item active"><a href="/user/logout"><button class="button button2"><b>Çıkış Yap</b></button></a></li>
+                {% else %}
+                <li class="nav-item active"><a href="/user/login"><button class="button button1"><b>Giriş Yap</b></button></a></li>
+                <li class="nav-item active"><a href="/user/register"><button class="button button3"><b>Kayıt Ol</b></button></a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

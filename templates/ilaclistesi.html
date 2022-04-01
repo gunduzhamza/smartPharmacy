@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block body %}
+
+{% if ilaclar %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">İlaç Adı</th>
+      <th scope="col">Prospektüs</th>
+      <th scope="col">Fiyat TL</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in ilaclar %}
+  <tr>
+      <th scope="row">{{i.id}}</th>
+      <td>{{i.ilac_adi}}</td>
+      <td>{{i.prospekt}}</td>
+      <td>{{i.ilacfiyati}}</td>
+      
+    </tr>
+  {% endfor %}
+    
+    
+  </tbody>
+</table>
+{% else %}
+<div class="alert alert-danger">Herhangi bir hasta kaydı bulunmuyor!!!</div>
+{% endif %}
+
+{% endblock body %}
+

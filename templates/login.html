@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+
+{% block title %}Kullanıcı Giriş Sayfası{% endblock title %}
+
+{% block body %}
+    {% load crispy_forms_tags %}
+
+    <div class="col-md-6 offset-md-3">
+      <div class="card-header p-1" style="border-radius:8px; background-color: #39AEA9">
+        <div class="py-1">
+        <h4 class="text-white font-weight-bolder text-center mt-2 mb-0"><b>DOKTOR GİRİŞ SAYFASI</b></h4>
+        </div>
+      </div><br>
+        
+        <form method="post">
+        {% csrf_token %}
+        {{form | crispy}}
+
+        <p class="mt-4 text-sm text-center">Hesabınız yok mu? <a class="text-primary text-gradient font-weight-bold" href="/user/register">Kayıt Ol</a></p>
+        <div class="text-center"><button class="btn btn-success w-50 my-1 mb-2" type="submit"><b>GİRİŞ YAP</b></button></div>
+        </form>
+    </div>
+    
+{% endblock body %}

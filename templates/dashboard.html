@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<h3>Kayıt Ekranı</h3>    
+<span>Hoşgeldiniz, <small>{{request.user.username}}</small></span>
+<hr>
+<span>
+<a class="btn btn-danger" href="/medicines/addpatient">Hasta Kaydı Oluştur</a>
+</span>
+<span><a class="btn btn-danger" href="/medicines/receteolustur">Reçete Yaz</a></span>
+<span><a class="btn btn-danger" href="/medicines/ilaclistesi">İlaç Listesi</a></span>
+<br><br>
+<h3>Kayıtlı Hastalar</h3>
+{% if medicines %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">İsim</th>
+      <th scope="col">Soyisim</th>
+      <th scope="col">Mail</th>
+      <th scope="col">Sil</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in medicines %}
+  <tr>
+      <th scope="row">{{i.id}}</th>
+      <td>{{i.first_name}}</td>
+      <td>{{i.last_name}}</td>
+      <td>{{i.mail}}</td>
+      <td><a href="/articles/delete/{{article.id}}" class="btn btn-danger">Sil</a></td>
+    </tr>
+  {% endfor %}
+    
+    
+  </tbody>
+</table>
+{% else %}
+<div class="alert alert-danger">Herhangi bir hasta kaydı bulunmuyor!!!</div>
+{% endif %}
+
+
+{% endblock body %}
+

@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block title %}Kullanıcı Sayfası{% endblock title %}
+
+
+{% block body %}
+    
+  {% load crispy_forms_tags %}
+
+  <div class="col-md-6 offset-md-3">
+      <div class="card-header p-1" style="border-radius:8px; background-color: #39AEA9">
+        <div class="py-1">
+        <h4 class="text-white font-weight-bolder text-center mt-2 mb-0"><b>DOKTOR KAYIT FORMU</b></h4>
+        </div>
+      </div><br>
+  
+        <form method="post">
+        {% csrf_token %}
+        {{form | crispy}}
+        <br>
+        <div class="text-center"><button class="btn btn-success w-50 my-1 mb-2"><b>KAYIT OL</b></button></div>
+        </form>
+
+  </div>
+{% endblock body %}
