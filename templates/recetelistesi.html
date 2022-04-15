@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block body %}
+
+{% if recete %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">Hasta Adı</th>
+      
+      <th scope="col">Mail Adresi</th>
+      <th scope="col">İlaçlar</th>
+      <th scope="col">Tutar (TL)</th>
+      <th scope="col">Mail</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in recete reversed %}
+  <tr>
+      
+      <th scope="row">{{i.id}}</th>
+      <td>{{i.hasta.first_name}} {{i.hasta.last_name}}</td>
+      <td>{{i.hasta.mail}}</td>
+      <td>{{i.get_tags_values}}</td>
+      <td>{{i.get_ilacfiyati}}</td>
+      
+      <td><a href="/medicines/medicine/{{i.id}}"><button class="btn btn-success"><b>Detay</b></button></td>
+      
+      
+    
+    </tr>
+  {% endfor %}
+    
+    
+  </tbody>
+</table>
+{% else %}
+<div class="alert alert-danger">Herhangi bir hasta kaydı bulunmuyor!!!</div>
+{% endif %}
+
+
+
+
+{% endblock body %}

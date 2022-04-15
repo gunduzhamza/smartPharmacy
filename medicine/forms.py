@@ -1,6 +1,6 @@
 from .models import *
 from django.forms import ModelForm
-
+from django import forms
 
 class PatientForm(ModelForm):
 
@@ -10,10 +10,16 @@ class PatientForm(ModelForm):
 
 
 class ReceteForm(ModelForm):
+    
     class Meta:
         model=Recete
         fields='__all__'
-    
+        
+        
+        widgets = {
+            
+            'tags': forms.CheckboxSelectMultiple()
+            }
 
 class MedicineForm(ModelForm):
     class Meta:

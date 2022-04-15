@@ -1,6 +1,7 @@
+
 from django.contrib import admin
 from .models import *
-
+from django.utils.safestring import mark_safe
 
 
 # Register your models here.
@@ -32,12 +33,20 @@ class PatientAdmin(admin.ModelAdmin):
         model=Patient
 @admin.register(Recete)
 class ReceteAdmin(admin.ModelAdmin):
-    list_display=["hasta","created_date"]
+    list_display=["hasta","created_date","secilmiş_ilaclar"]
+    
+    def secilmiş_ilaclar(self,obj):
+        html="<ul>"
+        for i in obj.tags.all():
+            html+="<li>"+ i.ilac_adi+"</li>"
+        return mark_safe(html)
 
     list_display_links=["hasta"]
 
     search_fields=["hasta"]
-    list_filter=["created_date"]
+    list_filter=["created_date","tags",]
     class Meta:
         
         model=Recete,Patient,Medicine
+
+    

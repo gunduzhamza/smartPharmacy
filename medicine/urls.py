@@ -10,5 +10,6 @@ urlpatterns = [
     path('addpatient/', views.addpatient, name = 'addpatient'),
     path('receteolustur/', views.receteolustur, name = 'receteolustur'),
     path('ilaclistesi/', views.ilacListesi, name = 'ilaclistesi'),
-
+    path('recetelistesi/', views.receteListesi, name = 'recetelistesi'),
+    path('medicine/<int:id>', views.deTail,name="detail"),
 ]

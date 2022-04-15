@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block body %}
+
+
+<h2><a class="dropdown-item disabled" href="#">{{medicine.get_tags_values}}</a> </h2>
+<span><img src={{medicine.qr_code.url}}></span>
+<form method="post">
+      {% csrf_token %}
+<button type="submit" class ="btn btn-success">Gönder</button>
+</form>
+{% endblock body %}
