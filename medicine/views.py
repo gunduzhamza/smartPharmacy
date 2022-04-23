@@ -1,6 +1,4 @@
 from django.shortcuts import render,redirect
-from matplotlib.style import context
-from sympy import content
 from medicine.forms import *
 from django.contrib import messages
 from medicine.models import Medicine, Patient
@@ -27,7 +25,7 @@ def addpatient(request):
         medicine.first_name
         medicine.save()
 
-        messages.success(request,"Hasta başarıyla oluşturuldu")
+        messages.success(request,"Hasta kaydı başarıyla oluşturuldu")
         return redirect("/medicines/dashboard/")
 
     return render(request,"addpatient.html",{"form":form})
