@@ -1,15 +1,10 @@
-from distutils.command.upload import upload
-import imp
-from typing import Any
 from django.db import models
 from django.utils.safestring import mark_safe
-from matplotlib.pyplot import get
-from numpy import save
 import qrcode
 from io import BytesIO
 from django.core.files import File
 from PIL import Image,ImageDraw
-from requests import request
+
 # Create your models here.
 
 # ilac tablosu
@@ -38,6 +33,7 @@ class Recete(models.Model):
     created_date=models.DateTimeField(auto_now=True)
     tags=models.ManyToManyField(Medicine,verbose_name="İlaçlar")
     qr_code=models.ImageField(upload_to="qr_codes",blank=True)
+    toplam=models.FloatField(null=True,blank=True,verbose_name="Tutar (TL)")
 
     def __str__(self):
         return self.hasta.first_name
@@ -48,8 +44,6 @@ class Recete(models.Model):
         for i in self.tags.all():
             total=total + i.ilacfiyati
         return total
-   
-    
 
     def get_tags_values(self):
         ret = "<ul>"
@@ -71,9 +65,9 @@ class Recete(models.Model):
     
     def save(self,*args,**kwargs):
 
+       
         
-        
-        super().save(**kwargs)
+        super(Recete,self).save(*args,**kwargs)
         qrcode_img=qrcode.make(self.get_tags_values2())
         canvas=Image.new('RGB', (qrcode_img.pixel_size, qrcode_img.pixel_size), 'white')
         draw=ImageDraw.Draw(canvas)
@@ -83,7 +77,13 @@ class Recete(models.Model):
         canvas.save(buffer,'JPEG')
         self.qr_code.save(fname,File(buffer),save=False)
         canvas.close()
-        super().save(*args,**kwargs)
+
+        total=0
+        for i in self.tags.all():
+            total=total + i.ilacfiyati
+        self.toplam=total
+
+        super(Recete,self).save(*args,**kwargs)
 
         
         

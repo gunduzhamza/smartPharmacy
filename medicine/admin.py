@@ -33,7 +33,7 @@ class PatientAdmin(admin.ModelAdmin):
         model=Patient
 @admin.register(Recete)
 class ReceteAdmin(admin.ModelAdmin):
-    list_display=["hasta","created_date","secilmiş_ilaclar"]
+    list_display=["hasta","created_date","secilmiş_ilaclar","toplam"]
     
     def secilmiş_ilaclar(self,obj):
         html="<ul>"

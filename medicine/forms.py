@@ -13,7 +13,7 @@ class ReceteForm(ModelForm):
     
     class Meta:
         model=Recete
-        fields='__all__'
+        fields=['hasta','tags',]
         
         
         widgets = {

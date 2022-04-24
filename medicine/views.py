@@ -66,17 +66,19 @@ def deTail(request,id):
     medicine= Recete.objects.filter(id=id).first()
     message= Recete.objects.filter(id=id)
     
+    
     if request.method=="POST":
         mail= message.values_list('hasta__mail',flat=True).first()
         patient=message.values_list('hasta__first_name',flat=True).first()
         qr_code=message.values_list('qr_code',flat=True).first()
+        total=message.values_list('toplam',flat=True).first()
         
         filename = "C:/Users/gundu/OneDrive/Masaüstü/smartPharmacy/uploads/" + qr_code
         attachment = open(filename,'rb')
-
+        subject='İlaçlarınızı eczane otomatından almayı unutmayınız.\nToplam Tutar: {} TL'.format(total)
         msg = EmailMultiAlternatives(
             "Sayın "+ patient,
-            'İlaçlarınızı eczane otomatına okutarak almayı unutmayınız.',
+            subject,
             settings.EMAIL_HOST_USER,
             [mail],
             headers={'Message-ID': 'foo'},
@@ -88,7 +90,7 @@ def deTail(request,id):
        
         msg.send()
 
-        messages.success(request,"mail başarıyla gönderildi")
+        messages.success(request,"Mail başarıyla gönderildi")
         
         
         return redirect("/medicines/dashboard/")

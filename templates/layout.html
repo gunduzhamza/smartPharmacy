@@ -18,11 +18,10 @@
                 
     {% for message in messages %}
     {% if message.tags == "success" %}
-    
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
     var m = "{{message}}";
-    swal("Perfect!",m,"success")
+    swal("Tebrikler !",m,"success")
     </script>
     {% else %}
     <div class="alert alert-{{ message.tags }}" style="border-radius:15px;"><b>{{ message }}</b></div>
