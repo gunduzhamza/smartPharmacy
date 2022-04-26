@@ -65,7 +65,8 @@ def receteListesi(request):
 def deTail(request,id):
     medicine= Recete.objects.filter(id=id).first()
     message= Recete.objects.filter(id=id)
-    
+
+
     
     if request.method=="POST":
         mail= message.values_list('hasta__mail',flat=True).first()
@@ -77,7 +78,7 @@ def deTail(request,id):
         attachment = open(filename,'rb')
         subject='İlaçlarınızı eczane otomatından almayı unutmayınız.\nToplam Tutar: {} TL'.format(total)
         msg = EmailMultiAlternatives(
-            "Sayın "+ patient,
+            "Sayın,"+ patient +" Reçeteniz ",
             subject,
             settings.EMAIL_HOST_USER,
             [mail],
