@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'medicine',
     'user',
     'crispy_forms',
-    'qr_code',
+    
 ]
 
 MIDDLEWARE = [

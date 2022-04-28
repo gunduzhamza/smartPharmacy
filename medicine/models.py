@@ -83,6 +83,7 @@ class Recete(models.Model):
             total=total + i.ilacfiyati
         self.toplam=total
 
+        
         super(Recete,self).save(*args,**kwargs)
 
         
