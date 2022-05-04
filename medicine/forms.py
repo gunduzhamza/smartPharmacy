@@ -21,6 +21,8 @@ class ReceteForm(ModelForm):
             'tags': forms.CheckboxSelectMultiple()
             }
 
+
+
 class MedicineForm(ModelForm):
     class Meta:
         model=Medicine

@@ -21,7 +21,7 @@
       <th scope="col">İsim</th>
       <th scope="col">Soyisim</th>
       <th scope="col">Mail</th>
-      <th scope="col">Sil</th>
+      <th scope="col">Reçete Yaz</th>
     </tr>
   </thead>
   <tbody>
@@ -31,7 +31,7 @@
       <td>{{i.first_name}}</td>
       <td>{{i.last_name}}</td>
       <td>{{i.mail}}</td>
-      <td><a href="/articles/delete/{{article.id}}" class="btn btn-danger">Sil</a></td>
+      <td><a href="/medicines/recete/{{i.id}}" class="btn btn-danger">+</a></td>
     </tr>
   {% endfor %}
     

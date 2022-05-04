@@ -5,6 +5,13 @@ from medicine.models import Medicine, Patient
 from smartPharmacy import settings
 from email.mime.image import MIMEImage
 from django.core.mail import EmailMultiAlternatives
+from django.forms import inlineformset_factory
+from django import forms
+from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
@@ -44,12 +51,35 @@ def receteolustur(request):
     context={"form":form}
     return render(request,"receteolustur.html",context)
 
+def makeRecete(request,id):
+    ReceteFormSet= inlineformset_factory(Patient,Recete,fields=('tags',),widgets={'tags': forms.CheckboxSelectMultiple()})
+
+    hasta=Patient.objects.filter(id=id).first()
+    formset=ReceteFormSet(instance=hasta)
+    #form=ReceteForm2(initial={'hasta':hasta})
+
+    if request.method=="POST":
+        #form=ReceteForm2(request.POST)
+        formset=ReceteFormSet(request.POST,instance=hasta)
+        if formset.is_valid():
+            formset.save()
+            formset.save()
+            messages.success(request,"Reçete başarıyla oluşturuldu")
+            return redirect("/medicines/dashboard/")
+
+    context={
+        "formset":formset
+    }
+    return render(request,"makeRecete.html",context)
 def ilacListesi(request):
     ilaclar=Medicine.objects.all()
     context={
         "ilaclar":ilaclar
     }
     return render(request,"ilaclistesi.html",context)
+
+
+
 
 def receteListesi(request):
     recete=Recete.objects.filter()
@@ -61,6 +91,7 @@ def receteListesi(request):
         
     }
     return render(request,"recetelistesi.html",context)
+
 
 def deTail(request,id):
     medicine= Recete.objects.filter(id=id).first()

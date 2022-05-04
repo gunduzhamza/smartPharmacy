@@ -12,4 +12,5 @@ urlpatterns = [
     path('ilaclistesi/', views.ilacListesi, name = 'ilaclistesi'),
     path('recetelistesi/', views.receteListesi, name = 'recetelistesi'),
     path('medicine/<int:id>', views.deTail,name="detail"),
+    path('recete/<int:id>',views.makeRecete,name="makeRecete"),
 ]
