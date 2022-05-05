@@ -1,47 +1,58 @@
 {% extends "layout.html" %}
 
+{% block title %}Hasta Kayıt Sayfası{% endblock title %}
+
 {% block body %}
 
-<h3>Kayıt Ekranı</h3>    
-<span>Hoşgeldiniz, <small>{{request.user.username}}</small></span>
-<hr>
-<span>
-<a class="btn btn-danger" href="/medicines/addpatient">Hasta Kaydı Oluştur</a>
-</span>
-<span><a class="btn btn-danger" href="/medicines/receteolustur">Reçete Yaz</a></span>
-<span><a class="btn btn-danger" href="/medicines/ilaclistesi">İlaç Listesi</a></span>
-<span><a class="btn btn-danger" href="/medicines/recetelistesi">Reçete Listesi</a></span>
-<br><br>
-<h3>Kayıtlı Hastalar</h3>
-{% if medicines %}
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">id</th>
-      <th scope="col">İsim</th>
-      <th scope="col">Soyisim</th>
-      <th scope="col">Mail</th>
-      <th scope="col">Reçete Yaz</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for i in medicines %}
-  <tr>
-      <th scope="row">{{i.id}}</th>
-      <td>{{i.first_name}}</td>
-      <td>{{i.last_name}}</td>
-      <td>{{i.mail}}</td>
-      <td><a href="/medicines/recete/{{i.id}}" class="btn btn-danger">+</a></td>
-    </tr>
-  {% endfor %}
-    
-    
-  </tbody>
-</table>
-{% else %}
-<div class="alert alert-danger">Herhangi bir hasta kaydı bulunmuyor!!!</div>
-{% endif %}
+<div class="col-md-8 offset-md-2">
+  <div class="card-header p-1" style="border-radius:8px; background-color: #00C897">
+    <div class="py-1">
+    <h4 class="text-white font-weight-bolder text-center mt-2 mb-0"><b>HASTA KAYIT FORMU</b></h4>
+    </div>
+  </div><br>
+    <div class="col-md-10 offset-md-1">
+      <span><a class="btn btn-outline-primary" href="/medicines/addpatient">Hasta Kaydı Oluştur</a></span>
+      <span><a class="btn btn-outline-success" href="/medicines/receteolustur">Reçete Yaz</a></span>
+      <span><a class="btn btn-outline-danger" href="/medicines/ilaclistesi">İlaç Listesi</a></span>
+      <span><a class="btn btn-outline-info" href="/medicines/recetelistesi">Reçete Listesi</a></span>
+      <br><br>
+      <h3 style="text-align:center; font-weight:bold">Kayıtlı Hastalar</h3>
 
+  <div class="input-group p-1 pb-3 justify-content-center align-items-center">
+  <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+  <button type="button" class="btn btn-outline-primary">search</button>
+  </div>
+  </div>
+
+  {% if medicines %}
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">İsim</th>
+          <th scope="col">Soyisim</th>
+          <th scope="col">Mail</th>
+          <th scope="col">Sil</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in medicines %}
+        <tr>
+          <th scope="row">{{i.id}}</th>
+          <td>{{i.first_name}}</td>
+          <td>{{i.last_name}}</td>
+          <td>{{i.mail}}</td>
+          <td><a href="/articles/delete/{{article.id}}" class="btn btn-danger">Sil</a></td>
+        </tr>
+        {% endfor %}
+      
+      </tbody>
+    </table>
+
+  {% else %}
+  <div class="alert alert-danger">Herhangi bir hasta kaydı bulunmuyor!!!</div>
+  {% endif %}
+
+</div>
 
 {% endblock body %}
-
