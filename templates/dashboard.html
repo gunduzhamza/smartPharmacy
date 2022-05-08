@@ -19,8 +19,8 @@
       <h3 style="text-align:center; font-weight:bold">Kayıtlı Hastalar</h3>
 
   <div class="input-group p-1 pb-3 justify-content-center align-items-center">
-  <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-  <button type="button" class="btn btn-outline-primary">search</button>
+  <input type="search" class="form-control rounded" placeholder="Hasta ara.." aria-label="Search" aria-describedby="search-addon" />
+  <button type="button" class="btn btn-outline-primary">Ara</button>
   </div>
   </div>
 
@@ -32,6 +32,7 @@
           <th scope="col">İsim</th>
           <th scope="col">Soyisim</th>
           <th scope="col">Mail</th>
+          <th scope="col">Reçete</th>
           <th scope="col">Sil</th>
         </tr>
       </thead>
@@ -42,7 +43,14 @@
           <td>{{i.first_name}}</td>
           <td>{{i.last_name}}</td>
           <td>{{i.mail}}</td>
-          <td><a href="/articles/delete/{{article.id}}" class="btn btn-danger">Sil</a></td>
+          
+
+          <td>
+        <span><a class="btn btn-outline-success" href="/medicines/recete/{{i.id}}">Güncelle</a></span> </td>
+          <td><a href="/articles/delete/{{article.id}}" style="text-align:center" class="btn btn-outline-danger">Sil</a></td>
+
+
+      
         </tr>
         {% endfor %}
       
