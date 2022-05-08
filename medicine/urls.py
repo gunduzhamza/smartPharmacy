@@ -12,5 +12,6 @@ urlpatterns = [
     path('ilaclistesi/', views.ilacListesi, name = 'ilaclistesi'),
     path('recetelistesi/', views.receteListesi, name = 'recetelistesi'),
     path('medicine/<int:id>', views.deTail,name="detail"),
+    path('ilaclar/<int:id>', views.send_mail,name="send_mail"),
     path('recete/<int:id>',views.makeRecete,name="makeRecete"),
 ]
