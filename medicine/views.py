@@ -1,4 +1,4 @@
-from re import template
+from cv2 import split
 from django.shortcuts import render,redirect
 from medicine.forms import *
 from django.contrib import messages
@@ -20,6 +20,12 @@ def index(request):
 
 @login_required(login_url="user:login")
 def dashboard(request):
+    
+    keyword=request.GET.get("keyword")
+    if keyword:
+        patient=Patient.objects.filter(first_name__contains=keyword)
+        return render(request,"dashboard.html",{"patient":patient})
+    
     medicines = Patient.objects.all()
     context={
         "medicines":medicines
@@ -104,37 +110,7 @@ def receteListesi(request):
 @login_required(login_url="user:login")
 def deTail(request,id):
     medicine= Recete.objects.filter(id=id).first()
-    message= Recete.objects.filter(id=id)
 
-
-    
-    if request.method=="POST":
-        mail= message.values_list('hasta__mail',flat=True).first()
-        patient=message.values_list('hasta__first_name',flat=True).first()
-        qr_code=message.values_list('qr_code',flat=True).first()
-        total=message.values_list('toplam',flat=True).first()
-        
-        filename = "C:/Users/gundu/OneDrive/Masaüstü/smartPharmacy/uploads/" + qr_code
-        attachment = open(filename,'rb')
-        subject='İlaçlarınızı eczane otomatından almayı unutmayınız.\nToplam Tutar: {} TL'.format(total)
-        msg = EmailMultiAlternatives(
-            "Sayın,"+ patient +" Reçeteniz ",
-            subject,
-            settings.EMAIL_HOST_USER,
-            [mail],
-            headers={'Message-ID': 'foo'},
-        )
-        if attachment:
-            mime_image = MIMEImage(attachment.read())
-            mime_image.add_header('Content-ID', '<attachment>')
-            msg.attach(mime_image)
-       
-        msg.send()
-
-        messages.success(request,"Mail başarıyla gönderildi")
-        
-        
-        return redirect("/medicines/dashboard/")
     context={
         "medicine":medicine,
         
@@ -150,10 +126,13 @@ def send_mail(request,id):
         patient=message.values_list('hasta__first_name',flat=True).first()
         qr_code=message.values_list('qr_code',flat=True).first()
         total=message.values_list('toplam',flat=True).first()
-
+        ilaclar=message.values_list("ilaclar",flat=True).first()
+        
+            
         filename = "C:/Users/gundu/OneDrive/Masaüstü/smartPharmacy/uploads/" + qr_code
         image_name = Path(filename).name
-
+        amblem="C:/Users/gundu/OneDrive/Masaüstü/smartPharmacy/static/img/eczane.png"
+        image_name2 = Path(amblem).name
         subject = "İlaçlarınızı eczane otomatından almayı unutmayınız."
         text_message = f"Email with a nice embedded image {image_name}."
         html_message = f"""
@@ -164,12 +143,17 @@ def send_mail(request,id):
             <title>Some title.</title>
         </head>
         <body>
-            
-            <h1>{subject}</h1>
+            <img src='cid:{image_name2}' width="100" height="100"/>
+            <h2>{subject}</h2>
             <p>
-            <h2>Toplam Tutar: {total} ₺</h2>
-            Karekodunuz.<br>
+
+            <h3 style='color:red; font-family:verdana'>Toplam Tutar: {total} ₺</h3>
+           
+            <h3>İlaçlarınız: {ilaclar}</h3>
+            
             <img src='cid:{image_name}'/>
+            
+            
             </p>
         </body>
         </html>
@@ -182,13 +166,18 @@ def send_mail(request,id):
 
 
         )
-        if all([text_message,filename,image_name]):
+        if all([text_message,amblem,filename,image_name,image_name2]):
             email.attach_alternative(html_message, "text/html")
             email.content_subtype = 'html'  
             with open(filename, mode='rb') as f:
                 image = MIMEImage(f.read())
                 email.attach(image)
                 image.add_header('Content-ID', f"<{image_name}>")
+
+            with open(amblem, mode='rb') as f:
+                image = MIMEImage(f.read())
+                email.attach(image)
+                image.add_header('Content-ID', f"<{image_name2}>")
         email.send()
 
         

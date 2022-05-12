@@ -34,6 +34,7 @@ class Recete(models.Model):
     tags=models.ManyToManyField(Medicine,verbose_name="İlaçlar")
     qr_code=models.ImageField(upload_to="qr_codes",blank=True)
     toplam=models.FloatField(null=True,blank=True,verbose_name="Tutar (TL)")
+    ilaclar=models.CharField(max_length=100,null=True,blank=True,verbose_name="İlaçlar")
 
     def __str__(self):
         return self.hasta.first_name
@@ -61,6 +62,7 @@ class Recete(models.Model):
         
         return ret
     
+
         
     
     def save(self,*args,**kwargs):
@@ -82,6 +84,11 @@ class Recete(models.Model):
         for i in self.tags.all():
             total=total + i.ilacfiyati
         self.toplam=total
+
+        html=""
+        for i in self.tags.all():
+            html+=" "+ i.ilac_adi +" "
+        self.ilaclar=html
 
         
         super(Recete,self).save(*args,**kwargs)
