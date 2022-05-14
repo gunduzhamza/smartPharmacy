@@ -1,4 +1,3 @@
-from cv2 import split
 from django.shortcuts import render,redirect
 from medicine.forms import *
 from django.contrib import messages
@@ -10,7 +9,6 @@ from django.forms import inlineformset_factory
 from django import forms
 from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
 from pathlib import Path
 
 # Create your views here.
@@ -117,7 +115,7 @@ def deTail(request,id):
              }
         
     return render(request,"detail.html",context)
-
+@login_required(login_url="user:login")
 def send_mail(request,id):
     medicine= Recete.objects.filter(id=id).first()
     message= Recete.objects.filter(id=id)
@@ -128,11 +126,10 @@ def send_mail(request,id):
         total=message.values_list('toplam',flat=True).first()
         ilaclar=message.values_list("ilaclar",flat=True).first()
         
-            
+        #http://localhost:8000/media/ 
+        #C:/Users/gundu/OneDrive/Masaüstü/smartPharmacy/uploads/   
         filename = "C:/Users/gundu/OneDrive/Masaüstü/smartPharmacy/uploads/" + qr_code
         image_name = Path(filename).name
-        amblem="C:/Users/gundu/OneDrive/Masaüstü/smartPharmacy/static/img/eczane.png"
-        image_name2 = Path(amblem).name
         subject = "İlaçlarınızı eczane otomatından almayı unutmayınız."
         text_message = f"Email with a nice embedded image {image_name}."
         html_message = f"""
@@ -143,17 +140,11 @@ def send_mail(request,id):
             <title>Some title.</title>
         </head>
         <body>
-            <img src='cid:{image_name2}' width="100" height="100"/>
-            <h2>{subject}</h2>
+           <h2>{subject}</h2> 
             <p>
-
             <h3 style='color:red; font-family:verdana'>Toplam Tutar: {total} ₺</h3>
-           
             <h3>İlaçlarınız: {ilaclar}</h3>
-            
             <img src='cid:{image_name}'/>
-            
-            
             </p>
         </body>
         </html>
@@ -166,7 +157,7 @@ def send_mail(request,id):
 
 
         )
-        if all([text_message,amblem,filename,image_name,image_name2]):
+        if all([text_message,filename,image_name]):
             email.attach_alternative(html_message, "text/html")
             email.content_subtype = 'html'  
             with open(filename, mode='rb') as f:
@@ -174,10 +165,6 @@ def send_mail(request,id):
                 email.attach(image)
                 image.add_header('Content-ID', f"<{image_name}>")
 
-            with open(amblem, mode='rb') as f:
-                image = MIMEImage(f.read())
-                email.attach(image)
-                image.add_header('Content-ID', f"<{image_name2}>")
         email.send()
 
         

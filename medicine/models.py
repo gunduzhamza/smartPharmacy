@@ -67,16 +67,19 @@ class Recete(models.Model):
     
     def save(self,*args,**kwargs):
 
-       
-        
         super(Recete,self).save(*args,**kwargs)
-        qrcode_img=qrcode.make(self.get_tags_values2())
+        html=""
+        for i in self.tags.all():
+            html+=" "+ i.ilac_adi +" "
+        self.ilaclar=html
+
+        qrcode_img=qrcode.make(html)
         canvas=Image.new('RGB', (qrcode_img.pixel_size, qrcode_img.pixel_size), 'white')
         draw=ImageDraw.Draw(canvas)
         canvas.paste(qrcode_img)
-        fname=f'qr_code-{self.hasta}.jpeg'
+        fname=f'qr_code-{self.hasta}.png'
         buffer=BytesIO()
-        canvas.save(buffer,'JPEG')
+        canvas.save(buffer,'PNG')
         self.qr_code.save(fname,File(buffer),save=False)
         canvas.close()
 
@@ -84,11 +87,6 @@ class Recete(models.Model):
         for i in self.tags.all():
             total=total + i.ilacfiyati
         self.toplam=total
-
-        html=""
-        for i in self.tags.all():
-            html+=" "+ i.ilac_adi +" "
-        self.ilaclar=html
 
         
         super(Recete,self).save(*args,**kwargs)
