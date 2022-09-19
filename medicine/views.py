@@ -108,13 +108,17 @@ def receteListesi(request):
 @login_required(login_url="user:login")
 def deTail(request,id):
     medicine= Recete.objects.filter(id=id).first()
-
+    
     context={
         "medicine":medicine,
-        
              }
         
     return render(request,"detail.html",context)
+
+
+
+
+
 @login_required(login_url="user:login")
 def send_mail(request,id):
     medicine= Recete.objects.filter(id=id).first()
